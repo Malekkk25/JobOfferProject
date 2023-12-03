@@ -1,0 +1,12 @@
+<!-- ic_job_title.xml -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+
+    <path
+        android:fillColor="@color/purple"
+    android:pathData="M3 2c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v20c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V2zm2 0v16h5v2h4v-2h5V2H5zm7 2h6v4h-6zm0 6h6v4h-6zm0 6h6v2h-6z"/>
+</vector>

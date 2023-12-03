@@ -197,7 +197,7 @@ public class signup_user extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(signup_user.this, full+"Registered Successfully", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();  // Dismiss the dialog here
+                        dialog.dismiss();  
 
                         finish();
                     }

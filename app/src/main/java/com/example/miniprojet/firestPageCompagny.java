@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 public class firestPageCompagny extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    androidx.appcompat.widget.Toolbar toolbar; // Change to androidx.appcompat.widget.Toolbar
+    androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +43,8 @@ public class firestPageCompagny extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId()== R.id.nav_add){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firestPageCompagny.this, "comp", Toast.LENGTH_SHORT).show();
-                    fragementR(new addJob());
-
+                    Intent i = new Intent(firestPageCompagny.this, InsertJobPostActivity.class);
+                    startActivity(i);
 
                 }
                 if (item.getItemId() == R.id.nav_profile) {
@@ -62,9 +60,8 @@ public class firestPageCompagny extends AppCompatActivity {
 
 
                 if (item.getItemId()== R.id.nav_jobs){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firestPageCompagny.this, "jobs", Toast.LENGTH_SHORT).show();
-                    fragementR(new fragementJobs());
+                    Intent i=new Intent(firestPageCompagny.this,listJobs_compagny.class);
+                    startActivity(i);
 
                 }
                 if (item.getItemId()== R.id.nav_candidates){
@@ -78,7 +75,7 @@ public class firestPageCompagny extends AppCompatActivity {
                     Toast.makeText(firestPageCompagny.this, "logout", Toast.LENGTH_SHORT).show();
                     fragementR(new fragementHistory());
                 }
-
+                drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
 

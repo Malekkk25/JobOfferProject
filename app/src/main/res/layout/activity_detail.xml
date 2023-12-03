@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailActivity">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/detail_title"
+                android:text="Title"
+                android:textSize="24sp"
+                android:layout_marginTop="14dp"
+                android:textColor="@color/purple_700"
+                android:textAlignment="center"
+                android:padding="10dp"
+                android:background="@drawable/edit_text"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Date : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_Date"
+                android:text="Date"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+
+                android:background="@drawable/edit_text"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Location : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_Location"
+                android:text="Location"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+
+                android:background="@drawable/edit_text"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Description : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_Description"
+                android:text="Description"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+
+                android:background="@drawable/edit_text"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Category : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_Category"
+                android:text="Category"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+
+                android:background="@drawable/edit_text"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Experience : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_Experience"
+                android:text="Experience"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+                android:background="@drawable/edit_text"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Skills Required : "
+                android:textSize="20sp"
+                android:textColor="@color/purple_500"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="22dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:id="@+id/detail_Skills"
+                android:text="Skills"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/purple"
+                android:background="@drawable/edit_text"
+
+                />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.github.clans.fab.FloatingActionMenu
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            app:menu_colorNormal="@color/purple"
+                            app:menu_colorPressed="@color/purple"
+                            app:menu_fab_size="normal"
+                            app:menu_icon="@drawable/baseline_format_list_bulleted_24"
+                            app:menu_openDirection="up"
+                            app:menu_showShadow="true">
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/editButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/baseline_edit_24"
+                                app:fab_colorNormal="@color/green"
+                                app:fab_showShadow="true"
+                                app:fab_size="mini" />
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/deleteButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/baseline_delete_24"
+                                app:fab_colorNormal="@color/red"
+                                app:fab_showShadow="true"
+                                app:fab_size="mini"
+                                tools:ignore="MissingClass" />
+                        </com.github.clans.fab.FloatingActionMenu>
+                    </RelativeLayout>
+
+                </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
+</LinearLayout>
