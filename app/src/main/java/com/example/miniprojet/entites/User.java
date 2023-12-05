@@ -16,7 +16,7 @@ public class User implements Serializable {
 
 
     @Exclude
-    public long idUser;
+    public String idUser;
     int enabled,experiences;
 
     String fullName,email,contact,password,role,summary,specialization,skills,education;
@@ -24,8 +24,9 @@ public class User implements Serializable {
 
 
 
-    public User(String fullName, String email, String contact, String password, String role, String summary) {
+    public User(String id,String fullName, String email, String contact, String password, String role, String summary) {
         this.enabled = 0;
+        this.idUser=id;
         this.fullName = fullName;
         this.email = email;
         this.contact = contact;
@@ -67,11 +68,11 @@ public class User implements Serializable {
         this.skills = skills;
     }
 
-    public long getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(long idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
 
@@ -149,41 +150,7 @@ public class User implements Serializable {
                 '}';
     }
 
-    /*@Exclude
-    public String generateUserId() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").push();
-        idUser = ref.getKey();
-        return idUser;
-    }*/
-    @Exclude
-    public long generateUserId() {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
-        // Get the current user count from the database
-        usersRef.child("userCount").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    long count = (long) dataSnapshot.getValue();
 
-                    // Increment the count
-                    count++;
-
-                    // Set the new count back to the database
-                    usersRef.child("userCount").setValue(count);
-
-                    // Generate the user ID using the incremented count
-                    idUser = count;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle the error
-            }
-        });
-
-        return idUser; // Return the generated user ID
-    }
 
 }

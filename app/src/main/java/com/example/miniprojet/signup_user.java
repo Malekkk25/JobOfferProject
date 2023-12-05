@@ -189,7 +189,7 @@ public class signup_user extends AppCompatActivity {
 
                     FirebaseUser firebaseUser=auth.getCurrentUser();
 
-                    User user = new User(full, Email, Contact,Password,role,Summary);
+                    User user = new User(firebaseUser.getUid(),full, Email, Contact,Password,role,Summary);
                     DatabaseReference refrenceProfile=FirebaseDatabase.getInstance().getReference("Users");
                     refrenceProfile.child(firebaseUser.getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
