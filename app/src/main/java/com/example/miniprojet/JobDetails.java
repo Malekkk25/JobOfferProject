@@ -4,13 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,22 +15,20 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import kotlinx.coroutines.Job;
-
-public class DetailActivity extends AppCompatActivity {
+public class JobDetails extends AppCompatActivity {
 
     TextView tvJobTitle, tvJobDate, tvJobDescription, tvJobLocation, tvCategory, tvExperience, tvSkills , tvIdJob;
     FloatingActionButton deleteBtn , updateBtn;
 
     String key = "";
     Long idJob;
-
+    androidx.appcompat.widget.Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        tvJobTitle = findViewById(R.id.detail_title);
+
         tvJobDate = findViewById(R.id.detail_Date);
         tvJobDescription = findViewById(R.id.detail_Description);
         tvJobLocation = findViewById(R.id.detail_Location);
@@ -43,11 +37,14 @@ public class DetailActivity extends AppCompatActivity {
         tvSkills = findViewById(R.id.detail_Skills);
         deleteBtn = findViewById(R.id.deleteButton);
         updateBtn = findViewById(R.id.editButton);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
 
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            tvJobTitle.setText(bundle.getString("jobTitle"));
+            getSupportActionBar().setTitle(bundle.getString("jobTitle"));
             tvJobDate.setText(bundle.getString("jobDate"));
             tvJobDescription.setText(bundle.getString("jobDescription"));
             tvJobLocation.setText(bundle.getString("jobLocation"));
@@ -60,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(JobDetails.this);
                 builder.setCancelable(true);
                 builder.setTitle("Delete");
                 builder.setMessage("Are you sure you want to delete this job?");
@@ -70,8 +67,8 @@ public class DetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Job").child(key);
                                 databaseReference.removeValue();
-                                Toast.makeText(DetailActivity.this, "Job Deleted", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                                Toast.makeText(JobDetails.this, "Job Deleted", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(JobDetails.this, firestPageCompagny.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -83,6 +80,7 @@ public class DetailActivity extends AppCompatActivity {
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
             }
         });
 
@@ -90,8 +88,8 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, UpdateActivity.class);
-                intent.putExtra("jobTitle", tvJobTitle.getText().toString());
+                Intent intent = new Intent(JobDetails.this, UpdateActivity.class);
+                intent.putExtra("jobTitle",bundle.getString("jobTitle"));
                 intent.putExtra("jobDate", tvJobDate.getText().toString());
                 intent.putExtra("jobDescription", tvJobDescription.getText().toString());
                 intent.putExtra("jobLocation", tvJobLocation.getText().toString());

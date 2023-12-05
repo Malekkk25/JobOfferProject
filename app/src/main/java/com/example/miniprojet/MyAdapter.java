@@ -49,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(context, DetailActivity.class);
+                    Intent intent = new Intent(context, JobDetails.class);
                     Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
                     intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
                     intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());

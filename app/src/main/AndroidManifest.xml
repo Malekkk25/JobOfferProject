@@ -13,13 +13,22 @@
         android:theme="@style/Theme.MiniProjet"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateEmail"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileCompagny"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileUser"
+            android:exported="false" />
+        <activity
             android:name=".listJobs_compagny"
             android:exported="false" />
         <activity
             android:name=".UpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".DetailActivity"
+            android:name=".JobDetails"
             android:exported="false" />
         <activity
             android:name=".InsertJobPostActivity"

@@ -14,8 +14,13 @@ import com.example.miniprojet.entites.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -23,18 +28,26 @@ public class AddDetailsUser extends AppCompatActivity {
     Button detail, uploadBtn;
     EditText experiences, specialization, skills, pdf, education;
 
+    private FirebaseAuth authProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details_user);
         Intent i = getIntent();
-        User user = (User) i.getSerializableExtra("user");
+        //User user = (User) i.getSerializableExtra("user");
 
         detail = findViewById(R.id.addDet);
         experiences = findViewById(R.id.experiences);
         specialization = findViewById(R.id.specialization);
         skills = findViewById(R.id.skills);
         education = findViewById(R.id.education);
+
+        authProfile=FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=authProfile.getCurrentUser();
+        String userId=firebaseUser.getUid();
+
+
 
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,24 +71,42 @@ public class AddDetailsUser extends AppCompatActivity {
                 }
 
                 if (valid) {
-                    user.setExperiences(Integer.valueOf(experiences.getText().toString()));
-                    user.setSpecialization(specialization.getText().toString());
-                    user.setSkills(skills.getText().toString());
-                    user.setEducation(education.getText().toString());
-                    user.setEnabled(1);
 
-                    updateData(user.getIdUser(),user.getFullName(), user.getExperiences(), user.getSpecialization(),
-                            user.getSkills(), user.getEducation(), user.getEnabled());
-                    Intent i = new Intent(AddDetailsUser.this, firstPageUser.class);
-                    i.putExtra("user", user);
-                    startActivity(i);
-                    finish();
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                    databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user=snapshot.getValue(User.class);
+                            if(user != null){
+                                user.setExperiences(Integer.valueOf(experiences.getText().toString()));
+                                user.setSpecialization(specialization.getText().toString());
+                                user.setSkills(skills.getText().toString());
+                                user.setEducation(education.getText().toString());
+                                user.setEnabled(1);
+
+                                updateData(userId,user.getFullName(), user.getExperiences(), user.getSpecialization(),
+                                        user.getSkills(), user.getEducation(), user.getEnabled());
+                                Intent i = new Intent(AddDetailsUser.this, firstPageUser.class);
+                                i.putExtra("user", user);
+                                startActivity(i);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+
                 }
             }
         });
     }
 
-    private void updateData(Long id,String name, int exp, String spec, String skills, String education, int enabled) {
+    private void updateData(String id,String name, int exp, String spec, String skills, String education, int enabled) {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("experiences", exp);
         userMap.put("specialization", spec);
@@ -84,7 +115,7 @@ public class AddDetailsUser extends AppCompatActivity {
         userMap.put("enabled", enabled);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(String.valueOf(id)).updateChildren(userMap)
+        databaseReference.child(id).updateChildren(userMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

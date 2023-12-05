@@ -3,20 +3,17 @@ package com.example.miniprojet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.miniprojet.entites.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class firstPageUser extends AppCompatActivity  {
 
@@ -46,60 +43,41 @@ public class firstPageUser extends AppCompatActivity  {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId()== R.id.nav_comp){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firstPageUser.this, "comp", Toast.LENGTH_SHORT).show();
-                    fragementR(new fragementCompanies());
+                    Intent i = new Intent(firstPageUser.this, ProfileUser.class);
+                    i.putExtra("user",user);
+                    startActivity(i);
 
 
                 }
                 if (item.getItemId() == R.id.nav_profile) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firstPageUser.this, "profile", Toast.LENGTH_SHORT).show();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("user", user);
-
-                    fragementR(new fragementProfile(), bundle);
+                    Intent i = new Intent(firstPageUser.this, ProfileUser.class);
+                    i.putExtra("user",user);
+                    startActivity(i);
 
                 }
 
 
                 if (item.getItemId()== R.id.nav_jobs){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firstPageUser.this, "jobs", Toast.LENGTH_SHORT).show();
-                    fragementR(new fragementJobs());
+
 
                 }
                 if (item.getItemId()== R.id.nav_history){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firstPageUser.this, "history", Toast.LENGTH_SHORT).show();
-                    fragementR(new fragementHistory());
+
                 }
 
                 if (item.getItemId()== R.id.nav_logout){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    Toast.makeText(firstPageUser.this, "logout", Toast.LENGTH_SHORT).show();
-                    fragementR(new fragementHistory());
-                }
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i=new Intent(firstPageUser.this,login_user.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    finish();
 
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
 
-        private void fragementR(Fragment fragment){
-            FragmentManager fragmentManager=getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,fragment);
-            fragmentTransaction.commit();
-        }
 
-            private void fragementR(Fragment fragment, Bundle bundle) {
-                fragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment);
-                fragmentTransaction.commit();
-            }
         });
 
 

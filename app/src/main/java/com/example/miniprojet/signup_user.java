@@ -12,11 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.example.miniprojet.entites.Job;
 import com.example.miniprojet.entites.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,20 +66,6 @@ public class signup_user extends AppCompatActivity {
 
 
         database= FirebaseDatabase.getInstance().getReference("Users");
-
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists())
-                    maxid=(snapshot.getChildrenCount());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         database.addChildEventListener(new ChildEventListener() {
             @Override
@@ -135,6 +126,10 @@ public class signup_user extends AppCompatActivity {
             password.setError("Required Password");
             valid=false;
         }
+        if(password.getText().toString().length()<6){
+            password.setError("Password must be at least 6 Characters");
+            valid=false;
+        }
         if(!password.getText().toString().equals(passConf.getText().toString())){
             passConf.setError("Wrong Password");
             valid=false;
@@ -174,8 +169,6 @@ public class signup_user extends AppCompatActivity {
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
-
-        // Pass the dialog to the uploadData method
         uploadData(dialog);
     }
 
@@ -185,28 +178,39 @@ public class signup_user extends AppCompatActivity {
         String Contact=contact.getText().toString();
         String Password=password.getText().toString();
         String Summary=summary.getText().toString();
-        String role="";
+        String role;
         if (user.isChecked()) role="user";
         else role="compagny";
+        FirebaseAuth auth=FirebaseAuth.getInstance();
+        auth.createUserWithEmailAndPassword(Email,Password).addOnCompleteListener(signup_user.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
 
-        User user = new User(full, Email, Contact,Password,role,Summary);
-        user.setIdUser(maxid+1);
-        FirebaseDatabase.getInstance().getReference("Users").child(String.valueOf(user.getIdUser())).setValue(user)
+                    FirebaseUser firebaseUser=auth.getCurrentUser();
 
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(signup_user.this, full+"Registered Successfully", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();  
+                    User user = new User(full, Email, Contact,Password,role,Summary);
+                    DatabaseReference refrenceProfile=FirebaseDatabase.getInstance().getReference("Users");
+                    refrenceProfile.child(firebaseUser.getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(signup_user.this, full+"   Registered Successfully,Please verify your email!", Toast.LENGTH_SHORT).show();
+                                firebaseUser.sendEmailVerification();
+                                Intent i=new Intent(signup_user.this,login_user.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
+                                finish();
+                            }else {
+                                Toast.makeText(signup_user.this, "User registered failed,Please Try again ", Toast.LENGTH_SHORT).show();
+                            }
 
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(signup_user.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });}
+                        }
+                    });
+
+
+
+                }
+            }
+        });}
 }

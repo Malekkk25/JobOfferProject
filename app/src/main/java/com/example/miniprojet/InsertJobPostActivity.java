@@ -30,6 +30,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +58,9 @@ public class InsertJobPostActivity extends AppCompatActivity {
     Long maxid;
     DatabaseReference database;
     DatePickerDialog.OnDateSetListener setListener;
+
+    private FirebaseAuth authProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,11 @@ public class InsertJobPostActivity extends AppCompatActivity {
                 if (item.getItemId()== R.id.nav_candidates){
                 }
                 if (item.getItemId()== R.id.nav_logout){
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i=new Intent(InsertJobPostActivity.this,login_user.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    finish();
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
@@ -107,7 +117,15 @@ public class InsertJobPostActivity extends AppCompatActivity {
         etExperience = findViewById(R.id.job_Experience);
         etSkills = findViewById(R.id.job_skillsrequired);
         saveJob = findViewById(R.id.btn_job_post);
+
+        authProfile = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = authProfile.getCurrentUser();
+        String userId = firebaseUser.getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+
         database= FirebaseDatabase.getInstance().getReference("Job");
+
 
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -207,24 +225,24 @@ public class InsertJobPostActivity extends AppCompatActivity {
                     valid=false;
                 }
                 if(valid==true)
-                saveData();
+                saveData(userId);
             }
         });
 
 
     }
 
-    public void  saveData(){
+    public void  saveData(String id){
         AlertDialog.Builder builder = new AlertDialog.Builder(InsertJobPostActivity.this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
-        uploadData();
+        uploadData(id);
 
     }
 
-    public void uploadData(){
+    public void uploadData(String id){
 
         String jobTitle = etJobTitle.getText().toString();
         String jobDate = etJobDate.getText().toString();
@@ -236,10 +254,13 @@ public class InsertJobPostActivity extends AppCompatActivity {
 
 
         Job job = new Job(maxid+1,jobTitle, jobDescription, jobLocation, category, jobDate, experience, skills);
+        job.setIdComp(id);
 
-        FirebaseDatabase.getInstance().getReference("Job").child(job.getIdJob().toString()).setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference refrenceJob=FirebaseDatabase.getInstance().getReference("Job");
+        refrenceJob.child(job.getIdJob().toString()).setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
                 Toast.makeText(InsertJobPostActivity.this, "Job Posted Successfully", Toast.LENGTH_SHORT).show();
                 etJobTitle.setText("");
                 etJobDate.setText("");
@@ -248,7 +269,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
                 etCategory.setText("");
                 etExperience.setText("");
                 etSkills.setText("");
-                finish();
+                finish();}
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -11,6 +11,8 @@ public class Job {
     private String key;
     private Long idJob;
 
+    private String idComp;
+
     public String getKey() {
         return key;
     }
@@ -20,8 +22,13 @@ public class Job {
     }
 
 
+    public String getIdComp() {
+        return idComp;
+    }
 
-
+    public void setIdComp(String idComp) {
+        this.idComp = idComp;
+    }
 
     public Job() {
     }
