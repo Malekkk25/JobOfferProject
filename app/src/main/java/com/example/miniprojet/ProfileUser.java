@@ -78,7 +78,7 @@ public class ProfileUser extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId()== R.id.nav_comp){
-                    Intent i = new Intent(ProfileUser.this, ProfileUser.class);
+                    Intent i = new Intent(ProfileUser.this, firstPageUser.class);
                     startActivity(i);
                 }
                 if (item.getItemId() == R.id.nav_profile) {
@@ -86,6 +86,8 @@ public class ProfileUser extends AppCompatActivity {
                     startActivity(i);
                 }
                 if (item.getItemId()== R.id.nav_jobs){
+                    Intent i = new Intent(ProfileUser.this, listJobsUser.class);
+                    startActivity(i);
                 }
                 if (item.getItemId()== R.id.nav_history){
                 }

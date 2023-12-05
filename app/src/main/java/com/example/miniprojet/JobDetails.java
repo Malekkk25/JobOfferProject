@@ -44,7 +44,7 @@ public class JobDetails extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            getSupportActionBar().setTitle(bundle.getString("jobTitle"));
+            getSupportActionBar().setTitle("Details of "+bundle.getString("jobTitle"));
             tvJobDate.setText(bundle.getString("jobDate"));
             tvJobDescription.setText(bundle.getString("jobDescription"));
             tvJobLocation.setText(bundle.getString("jobLocation"));

@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.miniprojet.adapter.MyAdapter;
 import com.example.miniprojet.entites.Job;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -72,14 +73,14 @@ public class listJobs_compagny extends AppCompatActivity {
                     Intent i = new Intent(listJobs_compagny.this, InsertJobPostActivity.class);
                     startActivity(i);
                 } else if (item.getItemId() == R.id.nav_profile) {
-                    // Handle profile item
+
                 } else if (item.getItemId() == R.id.nav_jobs) {
-                    // Handle jobs item
+
                 } else if (item.getItemId() == R.id.nav_candidates) {
                     Intent i = new Intent(listJobs_compagny.this, listJobs_compagny.class);
                     startActivity(i);
                 } else if (item.getItemId() == R.id.nav_logout) {
-                    // Handle logout item
+
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
