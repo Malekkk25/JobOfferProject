@@ -83,6 +83,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                                     intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
                                     intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
                                     intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
+                                    intent.putExtra("idComp", user.getIdUser());
                                     context.startActivity(intent);
                                 }
                                 else{
@@ -96,6 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                                     intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
                                     intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
                                     intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
+                                    intent.putExtra("idComp", user.getIdUser());
                                     context.startActivity(intent);
                                 }
 

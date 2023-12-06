@@ -140,7 +140,7 @@ public class listJobsUser extends AppCompatActivity {
                             jobList.add(job);
                         }
                     } else {
-                        if (job != null) {  // Added null check here
+                        if (job != null) {
                             job.setKey(itemSnapshot.getKey());
                             jobList.add(job);
                         }

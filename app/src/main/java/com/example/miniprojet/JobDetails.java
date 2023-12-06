@@ -97,7 +97,7 @@ public class JobDetails extends AppCompatActivity {
                 intent.putExtra("experience", tvExperience.getText().toString());
                 intent.putExtra("skills", tvSkills.getText().toString());
                 intent.putExtra("idValue", key);
-
+                intent.putExtra("idComp",bundle.getString("idComp"));
                 startActivity(intent);
             }
         });

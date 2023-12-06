@@ -111,7 +111,7 @@ public class JobDetailsUser extends AppCompatActivity {
                     postBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Post post=new Post(maxid+1,user.getIdUser(),key);
+                            Post post=new Post(maxid+1,user.getIdUser(),key,"en attente");
                             DatabaseReference refrencePost=FirebaseDatabase.getInstance().getReference("Post");
                             refrencePost.child(String.valueOf(post.getIdPost())).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

@@ -9,7 +9,15 @@ public class Post {
         this.idPost = idPost;
     }
 
-    String idUser,idJob;
+    String idUser,idJob,etat;
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
+    }
 
     Long idPost;
 
@@ -30,10 +38,11 @@ public class Post {
         this.idJob = idJob;
     }
 
-    public Post(Long idPost,String idUser, String idJob) {
+    public Post(Long idPost,String idUser, String idJob,String etat) {
         this.idPost=idPost;
         this.idUser = idUser;
         this.idJob = idJob;
+        this.etat=etat;
     }
     public Post() {
 

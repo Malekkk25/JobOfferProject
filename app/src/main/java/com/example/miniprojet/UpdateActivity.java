@@ -39,6 +39,7 @@ public class UpdateActivity extends AppCompatActivity {
     String title,desc,location,category,experience,skills,date;
     androidx.appcompat.widget.Toolbar toolbar;
     String key = "";
+    String idComp="";
     DatabaseReference databaseReference;
     StorageReference storageReference;
 
@@ -57,6 +58,7 @@ public class UpdateActivity extends AppCompatActivity {
         utvSkills = findViewById(R.id.update_job_skillsrequired);
         toolbar = findViewById(R.id.toolbar);
 
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Update Job Post");
 
@@ -71,6 +73,7 @@ public class UpdateActivity extends AppCompatActivity {
             utvExperience.setText(mBundle.getString("experience"));
             utvSkills.setText(mBundle.getString("skills"));
             key = mBundle.getString("idValue");
+            idComp=mBundle.getString("idComp");
         }
         if (key != null) {
             databaseReference = FirebaseDatabase.getInstance().getReference("Job").child(key);
@@ -112,6 +115,7 @@ public class UpdateActivity extends AppCompatActivity {
         skills = utvSkills.getText().toString().trim();
         date = utvJobDate.getText().toString().trim();
         Job job = new Job(title,desc,location,category,experience,skills,date);
+        job.setIdComp(idComp);
         databaseReference.setValue(job).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
