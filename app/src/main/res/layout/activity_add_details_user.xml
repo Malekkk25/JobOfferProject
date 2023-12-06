@@ -125,7 +125,7 @@
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
-            <!--  <TextView
+             <TextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="Documents : "
@@ -138,21 +138,23 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:orientation="horizontal">
-                   <EditText
-                       android:id="@+id/pdf"
-                       android:layout_width="200dp"
-                       android:layout_height="50dp"
-                       android:background="@drawable/edit_text"
-                       android:drawablePadding="8dp"
-                       android:hint="Upload CV (PDF)"
-                       android:inputType="text"
-                       android:padding="8dp"
-                       android:textColor="@color/black"
-                       android:textColorHighlight="@color/cardview_dark_background"
-                       android:layout_marginLeft="30dp"
-                       android:layout_marginRight="30dp"
-                       android:layout_marginTop="10dp"
-                       />
+                       <EditText
+                           android:id="@+id/pdf"
+                           android:layout_width="200dp"
+                           android:layout_height="50dp"
+                           android:background="@drawable/edit_text"
+                           android:drawablePadding="8dp"
+                           android:hint="Upload CV (PDF)"
+                           android:padding="8dp"
+                           android:textColor="@color/black"
+                           android:textColorHighlight="@color/cardview_dark_background"
+                           android:layout_marginLeft="30dp"
+                           android:layout_marginRight="30dp"
+                           android:layout_marginTop="10dp"
+                           android:drawableLeft="@drawable/baseline_arrow_circle_up_24"
+                           android:inputType="text"
+
+                           />
 
                    <Button
                        android:id="@+id/uploadButton"
@@ -162,7 +164,7 @@
                        android:layout_gravity="center_horizontal"
                        android:paddingTop="8dp"
                        android:onClick="onUploadButtonClick" />
-               </LinearLayout>-->
+               </LinearLayout>
 
 
               <Button

@@ -134,19 +134,22 @@ public class InsertJobPostActivity extends AppCompatActivity {
                     maxid = 0L;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Job job = dataSnapshot.getValue(Job.class);
-                        if(job == null){
-                            maxid=0L;
+                        if (job == null) {
+                            maxid = 0L;
                             break;
-
-                        }
-                        else
-                        {
-                            if (job.getIdJob() > maxid)
-                            maxid = job.getIdJob();
+                        } else {
+                            if (job.getIdJob() != null && job.getIdJob() > maxid) {
+                                maxid = job.getIdJob();
+                            }
                         }
                     }
+                } else {
+                    // If there are no jobs, set maxid to a default value (0L)
+                    maxid = 0L;
                 }
             }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -224,9 +227,9 @@ public class InsertJobPostActivity extends AppCompatActivity {
                     etExperience.setError("Experience Required");
                     valid=false;
                 }
-                if(valid==true)
+                if(valid==true){
                 saveData(userId);
-            }
+            }}
         });
 
 

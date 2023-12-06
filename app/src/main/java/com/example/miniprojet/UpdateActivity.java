@@ -82,7 +82,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveData();
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                Intent intent = new Intent(UpdateActivity.this, firestPageCompagny.class);
                 startActivity(intent);
             }
         });

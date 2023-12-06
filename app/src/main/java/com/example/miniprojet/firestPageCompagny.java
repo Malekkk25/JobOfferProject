@@ -126,10 +126,11 @@ public class firestPageCompagny extends AppCompatActivity {
                     Job job = itemSnapshot.getValue(Job.class);
 
 
-                    if (job != null && job.getIdComp().equals(userId)) {
+                    if (job != null && job.getIdComp() != null && job.getIdComp().equals(userId)) {
                         job.setKey(itemSnapshot.getKey());
                         jobList.add(job);
                     }
+
                 }
                 myAdapter.notifyDataSetChanged();
                 dialog.dismiss();
