@@ -54,9 +54,7 @@
         <activity
             android:name=".firstPageUser"
             android:exported="false" />
-        <activity
-            android:name=".signup_compagny"
-            android:exported="false" />
+
         <activity
             android:name=".loginCompagny"
             android:exported="false" />

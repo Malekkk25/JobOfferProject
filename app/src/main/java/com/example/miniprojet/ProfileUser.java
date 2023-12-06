@@ -1,7 +1,11 @@
 package com.example.miniprojet;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,14 +14,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.miniprojet.entites.Pdf;
 import com.example.miniprojet.entites.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,12 +34,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
 public class ProfileUser extends AppCompatActivity {
-    EditText name, email, contact, pass, confPass, exp, proExp, skills, education, summary;
-    Button updateProfile,updateEmail,updatePassword;
+    EditText name, email, contact, pass, confPass, exp, proExp, skills, education, summary,pdf;
+    Button updateProfile,updateEmail,updatePassword,uploadBtn;
     DatabaseReference database;
 
     String oldEmail, oldPassword;
@@ -41,6 +52,9 @@ public class ProfileUser extends AppCompatActivity {
     DrawerLayout drawerLayout;
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
+
+    StorageReference storageReference;
+    DatabaseReference databaseReference,d,databaseU;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,8 @@ public class ProfileUser extends AppCompatActivity {
         education = findViewById(R.id.education);
         summary = findViewById(R.id.summary);
         updateProfile = findViewById(R.id.updateProfile);
+        pdf=findViewById(R.id.pdf);
+        uploadBtn=findViewById(R.id.uploadButton);
 
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -108,6 +124,34 @@ public class ProfileUser extends AppCompatActivity {
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
         String userId = firebaseUser.getUid();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+
+        storageReference= FirebaseStorage.getInstance().getReference();
+        databaseU=FirebaseDatabase.getInstance().getReference("Uploads");
+        d=FirebaseDatabase.getInstance().getReference("pdfs");
+        d.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Pdf p=snapshot.getValue(Pdf.class);
+                    pdf.setText(p.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFiles();
+
+            }
+        });
 
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -187,6 +231,10 @@ public class ProfileUser extends AppCompatActivity {
                     education.setError("Education Required");
                     valid = false;
                 }
+                if(pdf.getText().toString().isEmpty()){
+                    pdf.setError("CV Required");
+                    valid = false;
+                }
 
                 if (valid) {
                     updateData(userId, name.getText().toString(),  contact.getText().toString(),  summary.getText().toString(), Integer.valueOf(exp.getText().toString()), proExp.getText().toString(), skills.getText().toString(), education.getText().toString());
@@ -200,9 +248,7 @@ public class ProfileUser extends AppCompatActivity {
     private void updateData(String id, String name, String contact, String summary, int exp, String spec, String skills, String education) {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("fullName", name);
-        //userMap.put("email", email);
         userMap.put("contact", contact);
-
         userMap.put("summary", summary);
         userMap.put("experiences", exp);
         userMap.put("specialization", spec);
@@ -249,5 +295,109 @@ public class ProfileUser extends AppCompatActivity {
 else
                 return super.onOptionsItemSelected(item);
         }
+
+    private void selectFiles() {
+        Intent i=new Intent();
+        i.setType("application/pdf");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,"select PDF Files..."),1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri pdfUri=data.getData();
+            pdf.setText(getFileName(pdfUri));
+            UploadFiles(data.getData());
+        }
+    }
+
+
+    private void UploadFiles(Uri data) {
+
+        authProfile=FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=authProfile.getCurrentUser();
+        String userId=firebaseUser.getUid();
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        StorageReference reference = storageReference.child("Uploads/" + userId + ".pdf");
+        reference.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri url = uriTask.getResult();
+
+                Pdf p=new Pdf(pdf.getText().toString(),url.toString(),userId);
+                d.child(userId).setValue(p);
+                updatePdfData(userId,p);
+
+                progressDialog.dismiss();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressDialog.setMessage("Uploaded  " + (int) progress + " %");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(ProfileUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private String getFileName(Uri uri) {
+        String result = null;
+        String scheme = uri.getScheme();
+
+        if (scheme != null && scheme.equals("content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+
+                    if (displayNameIndex != -1) {
+                        result = cursor.getString(displayNameIndex);
+                    } else {
+
+                        result = uri.getLastPathSegment();
+                    }
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+        return result;
+    }
+
+    private void updatePdfData(String userId, Pdf newPdf) {
+        DatabaseReference dataPdf = FirebaseDatabase.getInstance().getReference("pdfs");
+
+        dataPdf.child(userId).setValue(newPdf)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ProfileUser.this, "PDF Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ProfileUser.this, "Failed to update PDF data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ProfileUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        invalidateOptionsMenu();}
 
 }

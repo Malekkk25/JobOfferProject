@@ -50,7 +50,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edit_text"
                     android:drawablePadding="8dp"
-                    android:hint="Full Name"
+                    android:hint="Compagny Name"
                     android:inputType="text"
                     android:padding="8dp"
                     android:textColor="@color/black"
@@ -101,56 +101,6 @@
                     android:drawablePadding="8dp"
                     android:hint="Contact"
                     android:inputType="phone"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Password : "
-                    android:textSize="20sp"
-                    android:textColor="@color/purple_500"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="22dp"
-                    />
-
-                <EditText
-                    android:id="@+id/pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/edit_text"
-                    android:drawablePadding="8dp"
-                    android:hint="New Password"
-                    android:inputType="textPassword"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Confirm Password : "
-                    android:textSize="20sp"
-                    android:textColor="@color/purple_500"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="22dp"
-                    />
-
-                <EditText
-                    android:id="@+id/confPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/edit_text"
-                    android:drawablePadding="8dp"
-                    android:hint="Confirm Password"
-                    android:inputType="text"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background"

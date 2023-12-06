@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +43,7 @@ public class AddDetailsUser extends AppCompatActivity {
     private FirebaseAuth authProfile;
 
     StorageReference storageReference;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference,d;
 
 
 
@@ -66,14 +69,15 @@ public class AddDetailsUser extends AppCompatActivity {
 
         storageReference= FirebaseStorage.getInstance().getReference();
         databaseReference=FirebaseDatabase.getInstance().getReference("Uploads");
+        d=FirebaseDatabase.getInstance().getReference("pdfs");
 
-       /* uploadBtn.setOnClickListener(new View.OnClickListener() {
+       uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectFiles();
 
             }
-        });*/
+        });
 
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +97,10 @@ public class AddDetailsUser extends AppCompatActivity {
                 }
                 if (education.getText().toString().isEmpty()) {
                     education.setError("Education Required");
+                    valid = false;
+                }
+                if(pdf.getText().toString().isEmpty()){
+                    pdf.setError("CV Required");
                     valid = false;
                 }
 
@@ -132,42 +140,63 @@ public class AddDetailsUser extends AppCompatActivity {
         });
     }
 
-   /* private void selectFiles() {
+   private void selectFiles() {
         Intent i=new Intent();
-        i.setType("appliation/pdf");
-        i.setAction(Intent.ACTION_GET_CONTENT);
+       i.setType("application/pdf");
+       i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i,"select PDF Files..."),1);
-    }*/
+    }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null){
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri pdfUri=data.getData();
+            pdf.setText(getFileName(pdfUri));
             UploadFiles(data.getData());
         }
-    }*/
+    }
 
-   /* private void UploadFiles(Uri data) {
-        final ProgressDialog progressDialog=new ProgressDialog(this);
+
+    private void UploadFiles(Uri data) {
+
+        authProfile=FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=authProfile.getCurrentUser();
+        String userId=firebaseUser.getUid();
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        StorageReference reference=storageReference.child("Uploads/"+System.currentTimeMillis()+".pdf");
+        StorageReference reference = storageReference.child("Uploads/" + userId + ".pdf");
         reference.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri url=uriTask.getResult();
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri url = uriTask.getResult();
 
-                Pdf p=new Pdf(pdf)
+                Pdf p=new Pdf(pdf.getText().toString(),url.toString(),userId);
+                d.child(userId).setValue(p);
+
+                progressDialog.dismiss();
+            }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
+                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressDialog.setMessage("Uploaded  " + (int) progress + " %");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(AddDetailsUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }*/
+    }
+
 
     private void updateData(String id,String name, int exp, String spec, String skills, String education, int enabled) {
         HashMap<String, Object> userMap = new HashMap<>();
@@ -185,6 +214,7 @@ public class AddDetailsUser extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(AddDetailsUser.this, "Details Added Successfully", Toast.LENGTH_SHORT).show();
 
+
                         } else {
                             Toast.makeText(AddDetailsUser.this, "Failed to add details", Toast.LENGTH_SHORT).show();
                         }
@@ -197,5 +227,33 @@ public class AddDetailsUser extends AppCompatActivity {
                     }
                 });
     }
+
+    private String getFileName(Uri uri) {
+        String result = null;
+        String scheme = uri.getScheme();
+
+        if (scheme != null && scheme.equals("content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+
+                    if (displayNameIndex != -1) {
+                        result = cursor.getString(displayNameIndex);
+                    } else {
+
+                        result = uri.getLastPathSegment();
+                    }
+                }
+            }
+        }
+
+
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+
+        return result;
+    }
+
 }
 

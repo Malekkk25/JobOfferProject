@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -182,35 +183,37 @@ public class signup_user extends AppCompatActivity {
         if (user.isChecked()) role="user";
         else role="compagny";
         FirebaseAuth auth=FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword(Email,Password).addOnCompleteListener(signup_user.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(signup_user.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
 
-                    FirebaseUser firebaseUser=auth.getCurrentUser();
-
-                    User user = new User(firebaseUser.getUid(),full, Email, Contact,Password,role,Summary);
-                    DatabaseReference refrenceProfile=FirebaseDatabase.getInstance().getReference("Users");
+                    User user = new User(firebaseUser.getUid(), full, Email, Contact, Password, role, Summary);
+                    DatabaseReference refrenceProfile = FirebaseDatabase.getInstance().getReference("Users");
                     refrenceProfile.child(firebaseUser.getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(signup_user.this, full+"   Registered Successfully,Please verify your email!", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(signup_user.this, full + " Registered Successfully, Please verify your email!", Toast.LENGTH_SHORT).show();
                                 firebaseUser.sendEmailVerification();
-                                Intent i=new Intent(signup_user.this,login_user.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Intent i = new Intent(signup_user.this, login_user.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
                                 finish();
-                            }else {
-                                Toast.makeText(signup_user.this, "User registered failed,Please Try again ", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(signup_user.this, "User registered failed, Please Try again ", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
-
-
-
+                } else {
+                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        email.setError("Email address is already in use.");
+                    } else {
+                        Toast.makeText(signup_user.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
-        });}
+        });
+    }
 }

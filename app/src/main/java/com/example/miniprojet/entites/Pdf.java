@@ -2,14 +2,15 @@ package com.example.miniprojet.entites;
 
 public class Pdf {
 
-    private  String name,url;
+    private  String name,url,idUser;
     public Pdf() {
 
     }
 
-    public Pdf(String name, String url) {
+    public Pdf(String name, String url,String idUser) {
         this.name = name;
         this.url = url;
+        this.idUser=idUser;
     }
 
     public String getName() {

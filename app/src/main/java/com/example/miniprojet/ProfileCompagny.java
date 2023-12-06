@@ -54,8 +54,7 @@ public class ProfileCompagny extends AppCompatActivity {
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         contact = findViewById(R.id.contact);
-        pass = findViewById(R.id.pass);
-        confPass = findViewById(R.id.confPass);
+
         summary=findViewById(R.id.summary);
         updateProfile = findViewById(R.id.updateProfile);
 
@@ -126,7 +125,7 @@ public class ProfileCompagny extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle database error
+
             }
         });
 
@@ -155,17 +154,17 @@ public class ProfileCompagny extends AppCompatActivity {
                     contact.setError("At least 8 numbers");
                     valid=false;
                 }
-                if(!pass.getText().toString().isEmpty()){
+                /*if(!pass.getText().toString().isEmpty()){
                     if(!pass.getText().toString().equals(confPass.getText().toString())){
                         confPass.setError("Wrong Password");
                         valid=false;
-                    }}
+                    }}*/
                 if(summary.getText().toString().isEmpty()){
                     summary.setError("Required Summary");
                     valid=false;
                 }
                 if(valid ==true){
-                    updateData(userId,name.getText().toString(),email.getText().toString(),contact.getText().toString(),pass.getText().toString(),summary.getText().toString());
+                    updateData(userId,name.getText().toString(),email.getText().toString(),contact.getText().toString(),summary.getText().toString());
                 }
             }
         });
@@ -173,12 +172,12 @@ public class ProfileCompagny extends AppCompatActivity {
 
     }
 
-    private void updateData(String id,String name, String email, String contact, String password, String summary) {
+    private void updateData(String id,String name, String email, String contact,  String summary) {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("fullName", name);
         userMap.put("email", email);
         userMap.put("contact", contact);
-        userMap.put("password", password);
+
         userMap.put("summary", summary);
 
 
