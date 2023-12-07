@@ -269,7 +269,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         uploadData(id);
-        Intent intent = new Intent(InsertJobPostActivity.this, listJobs_compagny.class);
+        Intent intent = new Intent(InsertJobPostActivity.this, firestPageCompagny.class);
         startActivity(intent);
         finish();
 

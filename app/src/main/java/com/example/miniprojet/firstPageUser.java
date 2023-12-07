@@ -85,7 +85,9 @@ public class firstPageUser extends AppCompatActivity {
                     startActivity(i);
                 }
                 if (item.getItemId() == R.id.nav_history) {
-                    // Handle the history item
+
+                    Intent i = new Intent(firstPageUser.this, HistoryUserActivity.class);
+                    startActivity(i);
                 }
                 if (item.getItemId() == R.id.nav_logout) {
                     FirebaseAuth.getInstance().signOut();
