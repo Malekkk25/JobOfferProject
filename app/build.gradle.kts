@@ -48,4 +48,10 @@ dependencies {
     implementation("com.github.clans:fab:1.6.4")
     implementation("com.google.android.gms:play-services-maps:17.0.1")
     implementation("com.google.android.gms:play-services-places:16.1.0")
+    implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
+    implementation("com.github.barteksc:android-pdf-viewer:2.8.2")
+
+
+
+
 }
