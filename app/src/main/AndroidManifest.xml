@@ -27,7 +27,9 @@
             android:exported="false" />
         <activity
             android:name=".HistoryUserActivity"
-            android:exported="false" />
+            android:exported="true" >
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

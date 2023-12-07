@@ -38,6 +38,7 @@ public class Post {
         this.idJob = idJob;
     }
 
+
     public Post(Long idPost,String idUser, String idJob,String etat) {
         this.idPost=idPost;
         this.idUser = idUser;
