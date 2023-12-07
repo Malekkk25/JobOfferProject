@@ -5,6 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +19,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniProjet"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBYABbw_bIAWKpn2PpEVzd7awaCcVdMaJ0" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".MapsActivity"
+            android:exported="true" >
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyBYABbw_bIAWKpn2PpEVzd7awaCcVdMaJ0" />
+
+
+
+        </activity>
+        <activity android:name=".GetMapsActivity"
+            android:exported="false"/>
         <activity
             android:name=".JobDetailsUser"
             android:exported="false" />
@@ -44,7 +65,10 @@
             android:exported="false" />
         <activity
             android:name=".InsertJobPostActivity"
-            android:exported="false" />
+            android:exported="false" >
+
+
+        </activity>
         <activity
             android:name=".AddDetailsUser"
             android:exported="false" />
@@ -60,19 +84,22 @@
             android:exported="false" />
         <activity
             android:name=".login_user"
-            android:exported="true" />
-        <activity
-            android:name=".signup_user"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".signup_user"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+
+        </activity>
+
     </application>
 
 </manifest>

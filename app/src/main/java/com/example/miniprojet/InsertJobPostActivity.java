@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -61,6 +62,8 @@ public class InsertJobPostActivity extends AppCompatActivity {
 
     private FirebaseAuth authProfile;
 
+    private static final int PLACE_PICKER_REQUEST = 999;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,8 @@ public class InsertJobPostActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add Job Post");
@@ -190,6 +195,18 @@ public class InsertJobPostActivity extends AppCompatActivity {
                 }
 
         );
+        etJobLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(InsertJobPostActivity.this, MapsActivity.class);
+                startActivity(intent);
+                onPause();
+                System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            }
+        });
+
+
 
         saveJob.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -235,6 +252,16 @@ public class InsertJobPostActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        String address = intent.getStringExtra("address");
+        if (address != null) {
+            etJobLocation.setText(address);
+        }
+    }
+
     public void  saveData(String id){
         AlertDialog.Builder builder = new AlertDialog.Builder(InsertJobPostActivity.this);
         builder.setCancelable(false);
@@ -242,6 +269,9 @@ public class InsertJobPostActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         uploadData(id);
+        Intent intent = new Intent(InsertJobPostActivity.this, listJobs_compagny.class);
+        startActivity(intent);
+        finish();
 
     }
 

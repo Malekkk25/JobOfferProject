@@ -1,12 +1,23 @@
 package com.example.miniprojet;
 
-import androidx.appcompat.app.AppCompatActivity;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,14 +26,19 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class JobDetails extends AppCompatActivity {
 
-    TextView tvJobTitle, tvJobDate, tvJobDescription, tvJobLocation, tvCategory, tvExperience, tvSkills , tvIdJob;
-    FloatingActionButton deleteBtn , updateBtn;
+    TextView tvJobTitle, tvJobDate, tvJobDescription, tvJobLocation, tvCategory, tvExperience, tvSkills, tvIdJob;
+    FloatingActionButton deleteBtn, updateBtn;
 
     String key = "";
     Long idJob;
     androidx.appcompat.widget.Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +59,8 @@ public class JobDetails extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            getSupportActionBar().setTitle("Details of "+bundle.getString("jobTitle"));
+        if (bundle != null) {
+            getSupportActionBar().setTitle("Details of " + bundle.getString("jobTitle"));
             tvJobDate.setText(bundle.getString("jobDate"));
             tvJobDescription.setText(bundle.getString("jobDescription"));
             tvJobLocation.setText(bundle.getString("jobLocation"));
@@ -84,12 +100,21 @@ public class JobDetails extends AppCompatActivity {
             }
         });
 
+        tvJobLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(JobDetails.this, GetMapsActivity.class);
+                intent.putExtra("jobLocation", tvJobLocation.getText().toString());
+                startActivity(intent);
+            }
+        });
+
         updateBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(JobDetails.this, UpdateActivity.class);
-                intent.putExtra("jobTitle",bundle.getString("jobTitle"));
+                intent.putExtra("jobTitle", bundle.getString("jobTitle"));
                 intent.putExtra("jobDate", tvJobDate.getText().toString());
                 intent.putExtra("jobDescription", tvJobDescription.getText().toString());
                 intent.putExtra("jobLocation", tvJobLocation.getText().toString());
@@ -97,10 +122,25 @@ public class JobDetails extends AppCompatActivity {
                 intent.putExtra("experience", tvExperience.getText().toString());
                 intent.putExtra("skills", tvSkills.getText().toString());
                 intent.putExtra("idValue", key);
-                intent.putExtra("idComp",bundle.getString("idComp"));
+                intent.putExtra("idComp", bundle.getString("idComp"));
                 startActivity(intent);
             }
         });
 
+
+        tvJobLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(tvJobLocation.getText().toString());
+                Intent intent = new Intent(JobDetails.this, GetMapsActivity.class);
+                intent.putExtra("jobLocation", tvJobLocation.getText().toString());
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 }
+
+
