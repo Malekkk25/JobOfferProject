@@ -1,5 +1,10 @@
 package com.example.miniprojet;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -9,11 +14,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.example.miniprojet.adapter.MyAdapter;
 import com.example.miniprojet.entites.Job;
@@ -84,7 +84,7 @@ public class firestPageCompagny extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.nav_jobs) {
 
                 } else if (item.getItemId() == R.id.nav_candidates) {
-                    Intent i = new Intent(firestPageCompagny.this, firestPageCompagny.class);
+                    Intent i = new Intent(firestPageCompagny.this, PdfView.class);
                     startActivity(i);
                 } else if (item.getItemId() == R.id.nav_logout) {
                     FirebaseAuth.getInstance().signOut();

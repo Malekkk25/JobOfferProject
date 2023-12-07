@@ -3,12 +3,12 @@ package com.example.miniprojet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.miniprojet.adapter.CompagnyAdapter;
 import com.example.miniprojet.entites.User;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +84,6 @@ public class firstPageUser extends AppCompatActivity {
                     startActivity(i);
                 }
                 if (item.getItemId() == R.id.nav_history) {
-
                     Intent i = new Intent(firstPageUser.this, HistoryUserActivity.class);
                     startActivity(i);
                 }
