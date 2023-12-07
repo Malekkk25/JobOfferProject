@@ -2,9 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,23 +18,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniProjet"
         tools:targetApi="31">
+        <activity
+            android:name=".HistoryUserActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBYABbw_bIAWKpn2PpEVzd7awaCcVdMaJ0" />
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".MapsActivity"
-            android:exported="true" >
+            android:exported="true">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyBYABbw_bIAWKpn2PpEVzd7awaCcVdMaJ0" />
-
-
-
         </activity>
-        <activity android:name=".GetMapsActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".GetMapsActivity"
+            android:exported="false" />
         <activity
             android:name=".JobDetailsUser"
             android:exported="false" />
@@ -65,10 +68,7 @@
             android:exported="false" />
         <activity
             android:name=".InsertJobPostActivity"
-            android:exported="false" >
-
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".AddDetailsUser"
             android:exported="false" />
@@ -78,13 +78,12 @@
         <activity
             android:name=".firstPageUser"
             android:exported="false" />
-
         <activity
             android:name=".loginCompagny"
             android:exported="false" />
         <activity
             android:name=".login_user"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,10 +95,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-
-        </activity>
-
+            android:exported="false"></activity>
     </application>
 
 </manifest>
