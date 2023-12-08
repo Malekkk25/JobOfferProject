@@ -1,23 +1,10 @@
 package com.example.miniprojet;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,10 +12,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.miniprojet.entites.Job;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,15 +34,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InsertJobPostActivity extends AppCompatActivity {
     FirebaseFirestore firestore;
@@ -89,18 +79,21 @@ public class InsertJobPostActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId()== R.id.nav_add){
-
                     Intent i=new Intent(InsertJobPostActivity.this,InsertJobPostActivity.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
+                    Intent i = new Intent(InsertJobPostActivity.this, ProfileCompagny.class);
+                    startActivity(i);
+                    finish();
                 }
                 if (item.getItemId()== R.id.nav_jobs){
-                    Intent i=new Intent(InsertJobPostActivity.this,listJobs_compagny.class);
+                    Intent i = new Intent(InsertJobPostActivity.this, firestPageCompagny.class);
                     startActivity(i);
+                    finish();
                 }
-                if (item.getItemId()== R.id.nav_candidates){
-                }
+
                 if (item.getItemId()== R.id.nav_logout){
                     FirebaseAuth.getInstance().signOut();
                     Intent i=new Intent(InsertJobPostActivity.this,login_user.class);

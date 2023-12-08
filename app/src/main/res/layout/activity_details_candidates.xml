@@ -23,7 +23,7 @@
             android:background="@color/purple"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:menu="@menu/toolbar_menu"/>
+           />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,10 +221,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="22dp"
                     />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+
 
 
                     <Button
@@ -233,19 +230,20 @@
                         android:layout_height="60dp"
                         android:text="Show CV"
                         android:layout_gravity="center"
-                        android:paddingTop="8dp"
-                        android:onClick="showcvButtonClick" />
-                </LinearLayout>
+                        android:paddingTop="10dp"
+                        android:onClick="showcvButtonClick"
+                       />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Accept Button -->
+
                     <Button
                         android:id="@+id/Accept"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Accept"
                         android:textSize="18sp"
@@ -253,15 +251,16 @@
                         android:backgroundTint="@color/green"
                     />
 
-                    <!-- Reject Button -->
+
                     <Button
                         android:id="@+id/Reject"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Reject"
                         android:textSize="18sp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginLeft="10dp"
                         android:backgroundTint="@color/red"                    />
                 </LinearLayout>
 

@@ -74,18 +74,22 @@ public class firstPageUser extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_comp) {
                     Intent i = new Intent(firstPageUser.this, firstPageUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
                     Intent i = new Intent(firstPageUser.this, ProfileUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_jobs) {
                     Intent i = new Intent(firstPageUser.this, listJobsUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_history) {
                     Intent i = new Intent(firstPageUser.this, HistoryUserActivity.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_logout) {
                     FirebaseAuth.getInstance().signOut();

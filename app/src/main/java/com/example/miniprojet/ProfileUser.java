@@ -96,16 +96,22 @@ public class ProfileUser extends AppCompatActivity {
                 if (item.getItemId()== R.id.nav_comp){
                     Intent i = new Intent(ProfileUser.this, firstPageUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
                     Intent i = new Intent(ProfileUser.this, ProfileUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId()== R.id.nav_jobs){
                     Intent i = new Intent(ProfileUser.this, listJobsUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId()== R.id.nav_history){
+                    Intent i = new Intent(ProfileUser.this, HistoryUserActivity.class);
+                    startActivity(i);
+                    finish();
                 }
                 if (item.getItemId()== R.id.nav_logout){
                     FirebaseAuth.getInstance().signOut();
@@ -262,6 +268,8 @@ public class ProfileUser extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(ProfileUser.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
+                            Intent i=new Intent(ProfileUser.this,firstPageUser.class);
+                            startActivity(i);
                         } else {
                             Toast.makeText(ProfileUser.this, "Failed to update details", Toast.LENGTH_SHORT).show();
                         }
@@ -385,7 +393,7 @@ else
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ProfileUser.this, "PDF Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(ProfileUser.this, "PDF Data Updated Successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ProfileUser.this, "Failed to update PDF data", Toast.LENGTH_SHORT).show();
                         }
