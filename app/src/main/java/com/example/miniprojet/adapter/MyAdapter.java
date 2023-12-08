@@ -2,6 +2,7 @@ package com.example.miniprojet.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,9 +79,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                                         User user = snapshot.getValue(User.class);
                                         if (user != null) {
                                             if(user.getRole().equals("compagny")){
-                                                PopupMenu popupMenu = new PopupMenu(context, v);
+                                                PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END, 0, R.style.AppTheme_PopupMenu);
                                                 popupMenu.inflate(R.menu.job_popup_menu);
                                                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
                                                     @Override
                                                     public boolean onMenuItemClick(MenuItem item) {
                                                         if (item.getItemId() == R.id.menuJobDetails) {

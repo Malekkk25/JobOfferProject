@@ -50,7 +50,7 @@ public class DetailsCandidates extends AppCompatActivity {
             iduser = intent.getStringExtra("iduser");
         }
 
-
+        idjob = listCandidatesActivity.idJobfromlistCon;
 
 
         // Initialize Firebase reference
@@ -78,9 +78,8 @@ public class DetailsCandidates extends AppCompatActivity {
         });
         Accept_btn.setOnClickListener(v -> updateJobApplicationStatus("Accepted"));
         Reject_btn.setOnClickListener(v -> updateJobApplicationStatus("Rejected"));
-        System.out.println("iduser"+iduser);
+        System.out.println("iduser"+iduser + "idjob"+listCandidatesActivity.idJobfromlistCon);
     }
-
     private void updateJobApplicationStatus(String newStatus) {
         DatabaseReference postReference = FirebaseDatabase.getInstance().getReference("Post");
 
@@ -89,7 +88,7 @@ public class DetailsCandidates extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.getValue(Post.class);
-                    if (post != null) {
+                    if (post != null && post.getIdJob().equals(idjob)) {
                         // Update the status to the new value
                         post.setEtat(newStatus);
 
@@ -105,17 +104,19 @@ public class DetailsCandidates extends AppCompatActivity {
                                                 "Failed to update job application status",
                                                 Toast.LENGTH_SHORT).show();
                                     }
-                                            });
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Handle onCancelled event
-                        }
-                    });
+                                });
+                    }
                 }
+                Intent intent = new Intent(DetailsCandidates.this, listCandidatesActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled event
+            }
+        });
+    }
 
 
 

@@ -34,7 +34,7 @@ import java.util.List;
 
 public class listCandidatesActivity extends AppCompatActivity {
 
-    private String idJob = "";
+    public static String idJobfromlistCon = "";
     private DatabaseReference database;
 
     private FirebaseAuth authProfile;
@@ -45,10 +45,56 @@ public class listCandidatesActivity extends AppCompatActivity {
 
     private CandidateAdapter candidateAdapter;
 
+    DrawerLayout drawerLayout;
+    androidx.appcompat.widget.Toolbar toolbar;
+    NavigationView navigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_candidates);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("List of Jobs");
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.nav_add) {
+                    Intent i = new Intent(listCandidatesActivity.this, InsertJobPostActivity.class);
+                    startActivity(i);
+                } else if (item.getItemId() == R.id.nav_profile) {
+                    Intent i = new Intent(listCandidatesActivity.this, ProfileCompagny.class);
+                    startActivity(i);
+
+                } else if (item.getItemId() == R.id.nav_jobs) {
+                    Intent i = new Intent(listCandidatesActivity.this, listJobs_compagny.class);
+                    startActivity(i);
+                } else if (item.getItemId() == R.id.nav_candidates) {
+                    Intent i = new Intent(listCandidatesActivity.this, listCandidatesActivity.class);
+                    startActivity(i);
+                } else if (item.getItemId() == R.id.nav_logout) {
+
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+
+
+
 
         Condi_recyclerView = findViewById(R.id.list_recycler_view);
         Condi_recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
@@ -56,7 +102,7 @@ public class listCandidatesActivity extends AppCompatActivity {
 
         appliedJobsList = new ArrayList<>();
 
-        idJob = i.getStringExtra("idjob");
+        idJobfromlistCon = i.getStringExtra("idjob");
         UsersList = new ArrayList<>();
         candidateAdapter = new CandidateAdapter(listCandidatesActivity.this, UsersList);
         Condi_recyclerView.setAdapter(candidateAdapter);
@@ -74,7 +120,7 @@ public class listCandidatesActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    if (post != null && post.getIdJob() != null && post.getIdJob().equals(idJob)) {
+                    if (post != null && post.getIdJob() != null && post.getIdJob().equals(idJobfromlistCon) && "en attente".equals(post.getEtat())) {
                         appliedJobsList.add(post);
                     }
                 }
@@ -110,7 +156,9 @@ public class listCandidatesActivity extends AppCompatActivity {
                 Log.e("DatabaseError", "Error fetching Users: " + databaseError.getMessage());
             }
         });
+
     }
+
 
     private List<String> getIdUserList(List<Post> appliedJobsList) {
         List<String> idUserList = new ArrayList<>();

@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class JobDetailsUser extends AppCompatActivity {
@@ -105,41 +106,65 @@ public class JobDetailsUser extends AppCompatActivity {
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 User user = snapshot.getValue(User.class);
-                if(user != null){
+                if (user != null) {
                     postBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Post post=new Post(maxid+1,user.getIdUser(),key,"en attente");
-                            DatabaseReference refrencePost=FirebaseDatabase.getInstance().getReference("Post");
-                            refrencePost.child(String.valueOf(post.getIdPost())).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(JobDetailsUser.this, "Applied in this Job Succesfully !", Toast.LENGTH_SHORT).show();
-                                        Intent i=new Intent(JobDetailsUser.this,firstPageUser.class);
-                                        startActivity(i);
-                                        finish();
-                                    }else {
-                                        Toast.makeText(JobDetailsUser.this, "Failed to Apply ", Toast.LENGTH_SHORT).show();
+                            if (maxid != null) {
+                                DatabaseReference userPostsRef = FirebaseDatabase.getInstance().getReference("Post");
+                                Query query = userPostsRef.orderByChild("idUser").equalTo(user.getIdUser());
+
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        boolean alreadyApplied = false;
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Post existingPost = postSnapshot.getValue(Post.class);
+                                            if (existingPost != null && existingPost.getIdJob().equals(key)) {
+                                                alreadyApplied = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (alreadyApplied) {
+                                            // User has already applied for this job
+                                            Toast.makeText(JobDetailsUser.this, "You have already applied for this job", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // User hasn't applied for this job, proceed with the new post
+                                            Post post = new Post(maxid + 1, user.getIdUser(), key, "en attente");
+                                            DatabaseReference refrencePost = FirebaseDatabase.getInstance().getReference("Post");
+                                            refrencePost.child(String.valueOf(post.getIdPost())).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(JobDetailsUser.this, "Applied in this Job Successfully!", Toast.LENGTH_SHORT).show();
+                                                        Intent i = new Intent(JobDetailsUser.this, firstPageUser.class);
+                                                        startActivity(i);
+                                                        finish();
+                                                    } else {
+                                                        Toast.makeText(JobDetailsUser.this, "Failed to Apply", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        }
                                     }
 
-                                }
-                            });
-
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        // Handle onCancelled event
+                                    }
+                                });
+                            }
                         }
                     });
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle onCancelled event
             }
         });
-
-
     }
 }

@@ -78,6 +78,8 @@ public class listJobs_compagny extends AppCompatActivity {
                     //Intent i = new Intent(listJobs_compagny.this, listJobs_compagny.class);
                    // startActivity(i);
                 } else if (item.getItemId() == R.id.nav_candidates) {
+                    Intent i = new Intent(listJobs_compagny.this, listCandidatesActivity.class);
+                    startActivity(i);
 
                 } else if (item.getItemId() == R.id.nav_logout) {
 
