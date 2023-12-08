@@ -3,19 +3,24 @@ package com.example.miniprojet.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.miniprojet.DetailsCandidates;
 import com.example.miniprojet.JobDetails;
 import com.example.miniprojet.JobDetailsUser;
 import com.example.miniprojet.R;
 import com.example.miniprojet.entites.Job;
 import com.example.miniprojet.entites.User;
+import com.example.miniprojet.listCandidatesActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,40 +74,62 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                     databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                                        User user = snapshot.getValue(User.class);
+                                        if (user != null) {
+                                            if(user.getRole().equals("compagny")){
+                                                PopupMenu popupMenu = new PopupMenu(context, v);
+                                                popupMenu.inflate(R.menu.job_popup_menu);
+                                                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                    @Override
+                                                    public boolean onMenuItemClick(MenuItem item) {
+                                                        if (item.getItemId() == R.id.menuJobDetails) {
+                                                            Intent intent = new Intent(context, JobDetails.class);
+                                                            Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
+                                                            intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
+                                                            intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
+                                                            intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
+                                                            intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
+                                                            intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
+                                                            intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
+                                                            intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
+                                                            intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
+                                                            intent.putExtra("idComp", user.getIdUser());
+                                                            context.startActivity(intent);
 
-                            User user = snapshot.getValue(User.class);
-                            if (user != null) {
-                                if(user.getRole().equals("compagny")){
-                                    Intent intent = new Intent(context, JobDetails.class);
-                                    Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
-                                    intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
-                                    intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
-                                    intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
-                                    intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
-                                    intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
-                                    intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
-                                    intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
-                                    intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
-                                    intent.putExtra("idComp", user.getIdUser());
-                                    context.startActivity(intent);
+
+                                    } else if (item.getItemId() == R.id.menuDetailsCandidates) {
+                                        Intent intent = new Intent(context, listCandidatesActivity.class);
+                                        Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
+                                        intent.putExtra("idjob", idJob != null ? String.valueOf(idJob): null);
+                                        context.startActivity(intent);
+
+
+
+                                        Toast.makeText(context, "Details Candidates clicked", Toast.LENGTH_SHORT).show();
+                                    }
+                                    return true;
                                 }
-                                else{
-                                    Intent intent = new Intent(context, JobDetailsUser.class);
-                                    Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
-                                    intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
-                                    intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
-                                    intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
-                                    intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
-                                    intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
-                                    intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
-                                    intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
-                                    intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
-                                    intent.putExtra("idComp", user.getIdUser());
-                                    context.startActivity(intent);
-                                }
+                            });
 
+                            popupMenu.show();
 
-                            }
+                           /**/
+                        }else {
+                                                Intent intent = new Intent(context, JobDetailsUser.class);
+                                                Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
+                                                intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
+                                                intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
+                                                intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
+                                                intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
+                                                intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
+                                                intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
+                                                intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
+                                                intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
+                                                intent.putExtra("idComp", user.getIdUser());
+                                                context.startActivity(intent);
+                                            }
+                        }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {

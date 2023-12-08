@@ -18,7 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniProjet"
         tools:targetApi="31">
-
+        <activity
+            android:name=".listCandidatesActivity"
+            android:exported="false" />
         <activity
             android:name=".PdfView"
             android:exported="false" />
@@ -27,9 +29,7 @@
             android:exported="false" />
         <activity
             android:name=".HistoryUserActivity"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -77,7 +77,7 @@
             android:exported="false" />
         <activity
             android:name=".InsertJobPostActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".AddDetailsUser"
             android:exported="false" />
@@ -104,7 +104,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -67,39 +67,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            User user = snapshot.getValue(User.class);
-                            if (user != null) {
-                                if(user.getRole().equals("compagny")){
-                                    Intent intent = new Intent(context, JobDetails.class);
-                                    Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
-                                    intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
-                                    intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
-                                    intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
-                                    intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
-                                    intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
-                                    intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
-                                    intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
-                                    intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
-                                    intent.putExtra("idComp", user.getIdUser());
-                                    context.startActivity(intent);
-                                }
-                                else{
-                                    Intent intent = new Intent(context, JobDetailsUser.class);
-                                    Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
-                                    intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
-                                    intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
-                                    intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());
-                                    intent.putExtra("jobLocation", jobList.get(holder.getAdapterPosition()).getJobLocation());
-                                    intent.putExtra("category", jobList.get(holder.getAdapterPosition()).getCategory());
-                                    intent.putExtra("experience", jobList.get(holder.getAdapterPosition()).getExperience());
-                                    intent.putExtra("skills", jobList.get(holder.getAdapterPosition()).getSkills());
-                                    intent.putExtra("idValue", idJob != null ? String.valueOf(idJob): null);
-                                    intent.putExtra("idComp", user.getIdUser());
-                                    context.startActivity(intent);
-                                }
+                                
 
 
-                            }
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -132,6 +103,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
             tvSkills = itemView.findViewById(R.id.recSkills);
             cardView = itemView.findViewById(R.id.recCard);
             tvidValue = itemView.findViewById(R.id.recId);
+
 
         }
     }

@@ -1,4 +1,4 @@
-/*package com.example.miniprojet;
+package com.example.miniprojet;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class listCandidatesActivity extends AppCompatActivity {
-    private EditText name, email, contact, pass, confPass, exp, proExp, skills, education, summary,pdf;
+
     private String idJob = "";
     private DatabaseReference database;
 
@@ -44,22 +45,21 @@ public class listCandidatesActivity extends AppCompatActivity {
 
     private CandidateAdapter candidateAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_candidates);
 
         Condi_recyclerView = findViewById(R.id.list_recycler_view);
+        Condi_recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         Intent i = getIntent();
 
-
-
         appliedJobsList = new ArrayList<>();
-        UsersList = new ArrayList<>();
 
         idJob = i.getStringExtra("idjob");
-
+        UsersList = new ArrayList<>();
+        candidateAdapter = new CandidateAdapter(listCandidatesActivity.this, UsersList);
+        Condi_recyclerView.setAdapter(candidateAdapter);
 
 
 
@@ -71,9 +71,10 @@ public class listCandidatesActivity extends AppCompatActivity {
                 appliedJobsList.clear();
                 UsersList.clear();
 
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    if (post != null && post.getIdJob().equals(idJob)) {
+                    if (post != null && post.getIdJob() != null && post.getIdJob().equals(idJob)) {
                         appliedJobsList.add(post);
                     }
                 }
@@ -89,37 +90,34 @@ public class listCandidatesActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             User user = snapshot.getValue(User.class);
                             if (user != null && idUserList.contains(String.valueOf(user.getIdUser()))) {
-                                name.setText(user.getFullName());
-                                email.setText(user.getEmail());
-                                contact.setText(user.getContact());
-                                exp.setText(String.valueOf(user.getExperiences()));
-                                proExp.setText(user.getSpecialization());
-                                skills.setText(user.getSkills());
-                                education.setText(user.getEducation());
-                                summary.setText(user.getSummary());
+                                UsersList.add(user);
+
                             }
                         }
-
+                        candidateAdapter.notifyDataSetChanged();
 
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Handle error
+                        Log.e("DatabaseError", "Error fetching Users: " + databaseError.getMessage());
                     }
                 });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle error
+                Log.e("DatabaseError", "Error fetching Users: " + databaseError.getMessage());
             }
         });
     }
+
     private List<String> getIdUserList(List<Post> appliedJobsList) {
-        List<String> idJobList = new ArrayList<>();
+        List<String> idUserList = new ArrayList<>();
         for (Post post : appliedJobsList) {
-            idJobList.add(post.getIdJob());
+            idUserList.add(post.getIdUser());
         }
-        return idJobList;
-    }*/
+        return idUserList;
+    }
+}
+

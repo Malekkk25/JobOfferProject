@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:id="@+id/recName"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:text="Name"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:id="@+id/recId"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="90dp"
+            android:layout_toEndOf="@+id/recContact"/>
+
+
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:id="@+id/recContact"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:text="contact"
+            android:layout_below="@+id/recName"
+            android:layout_marginStart="20dp"/>
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:id="@+id/recexp"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:text="Experience"
+            android:textAlignment="center"
+            android:layout_below="@+id/recId"
+            android:layout_toEndOf="@+id/recName"
+            android:layout_marginStart="90dp"/>
+
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:id="@+id/recSkills"
+            android:textColor="@color/purple"
+            android:textSize="20sp"
+            android:text="Skills"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -252,6 +252,7 @@
                     android:layout_gravity="center_horizontal"
                     android:paddingTop="8dp"
                     android:onClick="onUploadButtonClick" />
+
             </LinearLayout>
 
             <Button

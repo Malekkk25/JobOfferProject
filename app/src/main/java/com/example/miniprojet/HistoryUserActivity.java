@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.miniprojet.adapter.CompagnyAdapter;
 import com.example.miniprojet.adapter.HistoryAdapter;
@@ -35,14 +38,18 @@ public class HistoryUserActivity extends AppCompatActivity {
 
     private ListView historyListView;
     private List<Post> appliedJobsList;
+    private List<Job> jobList;
     private HistoryAdapter historyAdapter;
     private FirebaseAuth authProfile;
-    DrawerLayout drawerLayout;
-    androidx.appcompat.widget.Toolbar toolbar;
-    NavigationView navigationView;
-    RecyclerView recyclerView;
+    private DrawerLayout drawerLayout;
+    private androidx.appcompat.widget.Toolbar toolbar;
+    private NavigationView navigationView;
+    private RecyclerView recyclerView;
 
-    List<Job> jobList;
+
+    private TextView waitingTextView;
+    private TextView acceptedTextView;
+    private TextView rejectedTextView;
 
 
     @Override
@@ -52,6 +59,9 @@ public class HistoryUserActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
 
+        waitingTextView = findViewById(R.id.waitingTextView);
+        acceptedTextView = findViewById(R.id.acceptedTextView);
+        rejectedTextView = findViewById(R.id.rejectedTextView);
 
 
         appliedJobsList = new ArrayList<>();
@@ -100,58 +110,67 @@ public class HistoryUserActivity extends AppCompatActivity {
             }
         });
 
+        waitingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(HistoryUserActivity.this, 1);
+                recyclerView.setLayoutManager(gridLayoutManager);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(HistoryUserActivity.this, 1);
-        recyclerView.setLayoutManager(gridLayoutManager);
+                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryUserActivity.this);
+                builder.setCancelable(true);
+                builder.setView(R.layout.progress_layout);
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(HistoryUserActivity.this);
-        builder.setCancelable(true);
-        builder.setView(R.layout.progress_layout);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                jobList = new ArrayList<>();
+                historyAdapter = new HistoryAdapter(HistoryUserActivity.this,  jobList);
+                recyclerView.setAdapter(historyAdapter);
 
-        jobList = new ArrayList<>();
-        historyAdapter = new HistoryAdapter(this,  jobList);
-        recyclerView.setAdapter(historyAdapter);
+                authProfile = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = authProfile.getCurrentUser();
+                String userId = firebaseUser.getUid();
 
-        authProfile = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = authProfile.getCurrentUser();
-        String userId = firebaseUser.getUid();
+                if (userId != null) {
+                    DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("Post");
 
-        if (userId != null) {
-            DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("Post");
-
-            historyRef.orderByChild("idUser").equalTo(userId).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    appliedJobsList.clear();
-                    jobList.clear();
-
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Post post = snapshot.getValue(Post.class);
-                        if (post != null && post.getIdUser().equals(userId)) {
-                            appliedJobsList.add(post);
-                        }
-                    }
-
-                    // Assuming you have a method to get idJob from appliedJobsList
-                    List<String> idJobList = getIdJobList(appliedJobsList);
-
-                    DatabaseReference jobsRef = FirebaseDatabase.getInstance().getReference("Job");
-
-                    jobsRef.addValueEventListener(new ValueEventListener() {
+                    historyRef.orderByChild("idUser").equalTo(userId).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            appliedJobsList.clear();
+                            jobList.clear();
+
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Job job = snapshot.getValue(Job.class);
-                                if (job != null && idJobList.contains(String.valueOf(job.getIdJob()))) {
-                                    job.setKey(snapshot.getKey());
-                                    jobList.add(job);
+                                Post post = snapshot.getValue(Post.class);
+                                if (post != null && post.getIdUser().equals(userId)) {
+                                    appliedJobsList.add(post);
                                 }
                             }
 
-                            historyAdapter.notifyDataSetChanged();
-                            dialog.dismiss();
+                            // Assuming you have a method to get idJob from appliedJobsList
+                            List<String> idJobList = getIdJobList(appliedJobsList);
+
+                            DatabaseReference jobsRef = FirebaseDatabase.getInstance().getReference("Job");
+
+                            jobsRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Job job = snapshot.getValue(Job.class);
+                                        if (job != null && idJobList.contains(String.valueOf(job.getIdJob()))) {
+                                            job.setKey(snapshot.getKey());
+                                            jobList.add(job);
+                                        }
+                                    }
+
+                                    historyAdapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Handle error
+                                }
+                            });
                         }
 
                         @Override
@@ -160,13 +179,30 @@ public class HistoryUserActivity extends AppCompatActivity {
                         }
                     });
                 }
+                Toast.makeText(HistoryUserActivity.this, "Waiting clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle error
-                }
-            });
-        }
+        acceptedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle click on "Accepted" TextView
+                // For example, show a message or perform an action
+                Toast.makeText(HistoryUserActivity.this, "Accepted clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        rejectedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle click on "Rejected" TextView
+                // For example, show a message or perform an action
+                Toast.makeText(HistoryUserActivity.this, "Rejected clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
     }
 
     // Method to get idJobList from appliedJobsList

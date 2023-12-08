@@ -75,10 +75,10 @@ public class listJobs_compagny extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.nav_profile) {
 
                 } else if (item.getItemId() == R.id.nav_jobs) {
-
+                    //Intent i = new Intent(listJobs_compagny.this, listJobs_compagny.class);
+                   // startActivity(i);
                 } else if (item.getItemId() == R.id.nav_candidates) {
-                    Intent i = new Intent(listJobs_compagny.this, listJobs_compagny.class);
-                    startActivity(i);
+
                 } else if (item.getItemId() == R.id.nav_logout) {
 
                 }
@@ -112,9 +112,11 @@ public class listJobs_compagny extends AppCompatActivity {
                     Job job = itemSnapshot.getValue(Job.class);
                     job.setKey(itemSnapshot.getKey());
                     jobList.add(job);
+
                 }
                 myAdapter.notifyDataSetChanged();
                 dialog.dismiss();
+
             }
 
             @Override
