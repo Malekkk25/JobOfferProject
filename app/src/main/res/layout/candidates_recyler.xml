@@ -49,18 +49,20 @@
             android:text="contact"
             android:layout_below="@+id/recName"
             android:layout_marginStart="20dp"/>
+
+
         <TextView
+            android:id="@+id/recexp"
             android:layout_width="140dp"
             android:layout_height="30dp"
-            android:id="@+id/recexp"
-            android:textColor="@color/purple"
-            android:textSize="20sp"
+            android:layout_below="@+id/recId"
+            android:layout_marginStart="58dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/recName"
             android:text="Experience"
             android:textAlignment="center"
-            android:layout_below="@+id/recId"
-            android:layout_toEndOf="@+id/recName"
-            android:layout_marginStart="90dp"/>
-
+            android:textColor="@color/purple"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="140dp"

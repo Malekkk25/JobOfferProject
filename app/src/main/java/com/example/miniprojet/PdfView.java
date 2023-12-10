@@ -1,5 +1,7 @@
 package com.example.miniprojet;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -23,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
+
+
 public class PdfView extends AppCompatActivity {
 
     private TextView text1;
@@ -30,6 +34,8 @@ public class PdfView extends AppCompatActivity {
 
     private FirebaseDatabase database=FirebaseDatabase.getInstance();
     DatabaseReference pdfDatabase=database.getReference("pdfs");
+
+    private ProgressDialog progressDialog;
 
 
 
@@ -41,11 +47,15 @@ public class PdfView extends AppCompatActivity {
         pdfView = findViewById(R.id.pdfView);
         text1 = findViewById(R.id.text1);
 
+
+
+        Intent i=getIntent();
+        String userId=i.getStringExtra("idUser");
         pdfDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s:snapshot.getChildren()){
-                    if(s!=null && s.getKey().equals("wsinjZSicnagOtq5wkz4mLuHXz33")){
+                    if(s!=null && s.getKey().equals(userId)){
                 Pdf pdf=s.getValue(Pdf.class);
                 text1.setText(pdf.getName());
                 new RetrivePdfStream().execute(pdf.getUrl());}}
@@ -60,6 +70,13 @@ public class PdfView extends AppCompatActivity {
 
         class RetrivePdfStream extends AsyncTask<String,Void, InputStream>{
 
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressDialog.show();
+            }
             @Override
             protected InputStream doInBackground(String... strings) {
                 InputStream inputStream=null;

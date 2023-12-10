@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.miniprojet.DetailsCandidates;
 import com.example.miniprojet.R;
-import com.example.miniprojet.entites.Job;
 import com.example.miniprojet.entites.User;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.MyViewHolder>{
@@ -46,12 +44,12 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.MyVi
         User currentUser = UsersList.get(position);
 
         holder.tvusername.setText(currentUser.getFullName());
-        holder.tvContact.setText(currentUser.getContact());
+        holder.tvContact.setText(currentUser.getEmail());
 
-        // Example conversion for non-string data types
+
         holder.tvExperience.setText(String.valueOf(currentUser.getExperiences()));
 
-        // Check for null before setting text
+
         if (currentUser.getSkills() != null) {
             holder.tvSkills.setText(currentUser.getSkills());
         } else {

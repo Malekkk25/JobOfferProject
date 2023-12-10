@@ -1,5 +1,13 @@
 package com.example.miniprojet;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -9,20 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.miniprojet.adapter.CompagnyAdapter;
 import com.example.miniprojet.adapter.HistoryAdapter;
-import com.example.miniprojet.adapter.MyAdapter;
 import com.example.miniprojet.entites.Job;
 import com.example.miniprojet.entites.Post;
-import com.example.miniprojet.entites.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,14 +82,17 @@ public class HistoryUserActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_comp) {
                     Intent i = new Intent(HistoryUserActivity.this, firstPageUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
                     Intent i = new Intent(HistoryUserActivity.this, ProfileUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_jobs) {
                     Intent i = new Intent(HistoryUserActivity.this, listJobsUser.class);
                     startActivity(i);
+                    finish();
                 }
                 if (item.getItemId() == R.id.nav_history) {
 

@@ -83,9 +83,6 @@ public class firestPageCompagny extends AppCompatActivity {
 
                 } else if (item.getItemId() == R.id.nav_jobs) {
 
-                } else if (item.getItemId() == R.id.nav_candidates) {
-                    Intent i = new Intent(firestPageCompagny.this, PdfView.class);
-                    startActivity(i);
                 } else if (item.getItemId() == R.id.nav_logout) {
                     FirebaseAuth.getInstance().signOut();
                     Intent i=new Intent(firestPageCompagny.this,login_user.class);

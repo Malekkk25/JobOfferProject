@@ -85,11 +85,6 @@ public class listCandidatesActivity extends AppCompatActivity {
                     Intent i = new Intent(listCandidatesActivity.this, listCandidatesActivity.class);
                     startActivity(i);
                 } else if (item.getItemId() == R.id.nav_logout) {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent i = new Intent(listCandidatesActivity.this, login_user.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                    finish();
 
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
