@@ -53,28 +53,17 @@
 
         <TextView
             android:id="@+id/recexp"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@+id/recId"
-            android:layout_marginStart="58dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="-1dp"
             android:layout_toEndOf="@+id/recName"
-            android:text="Experience"
+            android:text="Email"
             android:textAlignment="center"
             android:textColor="@color/purple"
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="140dp"
-            android:layout_height="30dp"
-            android:id="@+id/recSkills"
-            android:textColor="@color/purple"
-            android:textSize="20sp"
-            android:text="Skills"
-            android:layout_marginStart="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            />
 
     </RelativeLayout>
 

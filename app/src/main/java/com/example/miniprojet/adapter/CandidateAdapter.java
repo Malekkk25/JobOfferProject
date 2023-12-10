@@ -34,7 +34,6 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.MyVi
     public CandidateAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.candidates_recyler, parent, false);
-
             return new MyViewHolder(view);
     }
 
@@ -44,19 +43,19 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.MyVi
         User currentUser = UsersList.get(position);
 
         holder.tvusername.setText(currentUser.getFullName());
-        holder.tvContact.setText(currentUser.getEmail());
+        holder.tvContact.setText(currentUser.getContact());
 
 
-        holder.tvExperience.setText(String.valueOf(currentUser.getExperiences()));
+        holder.tvExperience.setText(String.valueOf(currentUser.getEmail()));
 
 
-        if (currentUser.getSkills() != null) {
+        /*if (currentUser.getSkills() != null) {
             holder.tvSkills.setText(currentUser.getSkills());
         } else {
             holder.tvSkills.setText("No skills available");
-        }
+        }*/
 
-        holder.tvidValue.setText(currentUser.getIdUser());
+       // holder.tvidValue.setText(currentUser.getIdUser());
 
         if (holder.cardView != null) {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +90,6 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.MyVi
             tvusername = itemView.findViewById(R.id.recName);
             tvContact = itemView.findViewById(R.id.recContact);
             tvExperience = itemView.findViewById(R.id.recexp);
-            tvSkills = itemView.findViewById(R.id.recSkills);
             cardView = itemView.findViewById(R.id.recCard);
             tvidValue = itemView.findViewById(R.id.recId);
 

@@ -48,12 +48,48 @@ public class DetailsCandidates extends AppCompatActivity {
 
 
         name = findViewById(R.id.name);
+
+        name.setFocusable(false);
+        name.setClickable(false);
+        name.setCursorVisible(false);
+
         contact = findViewById(R.id.contact);
+
+        contact.setFocusable(false);
+        contact.setClickable(false);
+        contact.setCursorVisible(false);
+
+
         exp = findViewById(R.id.exp);
+
+
+        exp.setFocusable(false);
+        exp.setClickable(false);
+        exp.setCursorVisible(false);
+
         proExp = findViewById(R.id.proExp);
+
+        proExp.setFocusable(false);
+        proExp.setClickable(false);
+        proExp.setCursorVisible(false);
+
         skills = findViewById(R.id.skills);
+
+        skills.setFocusable(false);
+        skills.setClickable(false);
+        skills.setCursorVisible(false);
+
         education = findViewById(R.id.education);
+
+        education.setFocusable(false);
+        education.setClickable(false);
+        education.setCursorVisible(false);
+
         summary = findViewById(R.id.summary);
+
+        summary.setFocusable(false);
+        summary.setClickable(false);
+        summary.setCursorVisible(false);
         ShowPdf = findViewById(R.id.Show_cv);
         Accept_btn = findViewById(R.id.Accept);
         Reject_btn = findViewById(R.id.Reject);

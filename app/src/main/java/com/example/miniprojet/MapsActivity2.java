@@ -1,6 +1,5 @@
 package com.example.miniprojet;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -67,7 +65,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 Intent intent = new Intent(MapsActivity2.this, InsertJobPostActivity.class);
                 intent.putExtra("address", address);
                 startActivity(intent);
-                // Use other address components as needed
+
             } else {
                 Toast.makeText(this, "Address not found", Toast.LENGTH_SHORT).show();
             }
