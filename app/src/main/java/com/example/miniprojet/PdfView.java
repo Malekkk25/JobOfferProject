@@ -1,6 +1,5 @@
 package com.example.miniprojet;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,8 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-
-
 public class PdfView extends AppCompatActivity {
 
     private TextView text1;
@@ -35,8 +32,6 @@ public class PdfView extends AppCompatActivity {
     private FirebaseDatabase database=FirebaseDatabase.getInstance();
     DatabaseReference pdfDatabase=database.getReference("pdfs");
 
-    private ProgressDialog progressDialog;
-
 
 
     @Override
@@ -44,21 +39,20 @@ public class PdfView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_view);
 
+        Intent i=getIntent();
+        String userId=i.getStringExtra("userId");
+
         pdfView = findViewById(R.id.pdfView);
         text1 = findViewById(R.id.text1);
 
-
-
-        Intent i=getIntent();
-        String userId=i.getStringExtra("idUser");
         pdfDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s:snapshot.getChildren()){
                     if(s!=null && s.getKey().equals(userId)){
-                Pdf pdf=s.getValue(Pdf.class);
-                text1.setText(pdf.getName());
-                new RetrivePdfStream().execute(pdf.getUrl());}}
+                        Pdf pdf=s.getValue(Pdf.class);
+                        text1.setText(pdf.getName());
+                        new RetrivePdfStream().execute(pdf.getUrl());}}
 
             }
 
@@ -68,34 +62,26 @@ public class PdfView extends AppCompatActivity {
             }
         });}
 
-        class RetrivePdfStream extends AsyncTask<String,Void, InputStream>{
+    class RetrivePdfStream extends AsyncTask<String,Void, InputStream>{
 
-
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog.show();
-            }
-            @Override
-            protected InputStream doInBackground(String... strings) {
-                InputStream inputStream=null;
-                try{
-                    URL url=new URL(strings[0]);
-                    HttpURLConnection urlConnection=(HttpURLConnection)url.openConnection();
-                    if(urlConnection.getResponseCode()==200){
-                        inputStream=new BufferedInputStream(urlConnection.getInputStream());
-                    }
-                }catch (IOException e){
-                    return null;
+        @Override
+        protected InputStream doInBackground(String... strings) {
+            InputStream inputStream=null;
+            try{
+                URL url=new URL(strings[0]);
+                HttpURLConnection urlConnection=(HttpURLConnection)url.openConnection();
+                if(urlConnection.getResponseCode()==200){
+                    inputStream=new BufferedInputStream(urlConnection.getInputStream());
                 }
-                return inputStream;
+            }catch (IOException e){
+                return null;
             }
+            return inputStream;
+        }
 
-            @Override
-            protected void onPostExecute(InputStream inputStream){
-                pdfView.fromStream(inputStream).load();
-            }
+        @Override
+        protected void onPostExecute(InputStream inputStream){
+            pdfView.fromStream(inputStream).load();
         }
     }
-
+}
