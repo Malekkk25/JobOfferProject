@@ -19,6 +19,9 @@
         android:theme="@style/Theme.MiniProjet"
         tools:targetApi="31">
         <activity
+            android:name=".MapsActivity2"
+            android:exported="false" />
+        <activity
             android:name=".listCandidatesActivity"
             android:exported="false" />
         <activity
@@ -29,7 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".HistoryUserActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

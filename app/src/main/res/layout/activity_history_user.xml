@@ -36,37 +36,55 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_below="@+id/toolbar">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Waiting"
-                android:textSize="20sp"
-                android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:layout_gravity="left"
                 android:id="@+id/waitingTextView"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accepted"
-                android:textSize="20sp"
+                android:layout_gravity="left"
+                android:text="Waiting"
                 android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/acceptedTextView"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rejected"
-                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:text="Accepted"
                 android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:layout_gravity="right"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/rejectedTextView"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Rejected"
+                android:textColor="@color/purple"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </com.google.android.material.appbar.MaterialToolbar>
+
+        <!-- Line above MaterialToolbar -->
+        <View
+            android:id="@+id/lineAbove"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_above="@+id/materialToolbar"
+            android:background="@color/black" />
+
+        <!-- Line below MaterialToolbar -->
+        <View
+            android:id="@+id/lineBelow"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/materialToolbar"
+            android:layout_marginTop="2dp"
+            android:background="@color/black" />
 
 
         <androidx.recyclerview.widget.RecyclerView

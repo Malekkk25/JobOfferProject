@@ -113,6 +113,10 @@ public class HistoryUserActivity extends AppCompatActivity {
         waitingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                waitingTextView.setBackgroundColor(getResources().getColor(R.color.Htextview));
+                acceptedTextView.setBackgroundColor(getResources().getColor(R.color.white));
+                rejectedTextView.setBackgroundColor(getResources().getColor(R.color.white));
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(HistoryUserActivity.this, 1);
                 recyclerView.setLayoutManager(gridLayoutManager);
 
@@ -141,7 +145,7 @@ public class HistoryUserActivity extends AppCompatActivity {
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Post post = snapshot.getValue(Post.class);
-                                if (post != null && post.getIdUser().equals(userId)) {
+                                if (post != null && post.getIdUser().equals(userId) && "en attente".equals(post.getEtat())) {
                                     appliedJobsList.add(post);
                                 }
                             }
@@ -186,8 +190,75 @@ public class HistoryUserActivity extends AppCompatActivity {
         acceptedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle click on "Accepted" TextView
-                // For example, show a message or perform an action
+                waitingTextView.setBackgroundColor(getResources().getColor(R.color.white));
+                acceptedTextView.setBackgroundColor(getResources().getColor(R.color.Htextview));
+                rejectedTextView.setBackgroundColor(getResources().getColor(R.color.white));
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(HistoryUserActivity.this, 1);
+                recyclerView.setLayoutManager(gridLayoutManager);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryUserActivity.this);
+                builder.setCancelable(true);
+                builder.setView(R.layout.progress_layout);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                jobList = new ArrayList<>();
+                historyAdapter = new HistoryAdapter(HistoryUserActivity.this,  jobList);
+                recyclerView.setAdapter(historyAdapter);
+
+                authProfile = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = authProfile.getCurrentUser();
+                String userId = firebaseUser.getUid();
+
+                if (userId != null) {
+                    DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("Post");
+
+                    historyRef.orderByChild("idUser").equalTo(userId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            appliedJobsList.clear();
+                            jobList.clear();
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                if (post != null && post.getIdUser().equals(userId) && "Accepted".equals(post.getEtat())) {
+                                    appliedJobsList.add(post);
+                                }
+                            }
+
+                            // Assuming you have a method to get idJob from appliedJobsList
+                            List<String> idJobList = getIdJobList(appliedJobsList);
+
+                            DatabaseReference jobsRef = FirebaseDatabase.getInstance().getReference("Job");
+
+                            jobsRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Job job = snapshot.getValue(Job.class);
+                                        if (job != null && idJobList.contains(String.valueOf(job.getIdJob()))) {
+                                            job.setKey(snapshot.getKey());
+                                            jobList.add(job);
+                                        }
+                                    }
+
+                                    historyAdapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Handle error
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Handle error
+                        }
+                    });
+                }
                 Toast.makeText(HistoryUserActivity.this, "Accepted clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -195,8 +266,75 @@ public class HistoryUserActivity extends AppCompatActivity {
         rejectedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle click on "Rejected" TextView
-                // For example, show a message or perform an action
+                waitingTextView.setBackgroundColor(getResources().getColor(R.color.white));
+                acceptedTextView.setBackgroundColor(getResources().getColor(R.color.white));
+                rejectedTextView.setBackgroundColor(getResources().getColor(R.color.Htextview));
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(HistoryUserActivity.this, 1);
+                recyclerView.setLayoutManager(gridLayoutManager);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryUserActivity.this);
+                builder.setCancelable(true);
+                builder.setView(R.layout.progress_layout);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                jobList = new ArrayList<>();
+                historyAdapter = new HistoryAdapter(HistoryUserActivity.this,  jobList);
+                recyclerView.setAdapter(historyAdapter);
+
+                authProfile = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = authProfile.getCurrentUser();
+                String userId = firebaseUser.getUid();
+
+                if (userId != null) {
+                    DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference("Post");
+
+                    historyRef.orderByChild("idUser").equalTo(userId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            appliedJobsList.clear();
+                            jobList.clear();
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                if (post != null && post.getIdUser().equals(userId) && "Rejected".equals(post.getEtat())) {
+                                    appliedJobsList.add(post);
+                                }
+                            }
+
+                            // Assuming you have a method to get idJob from appliedJobsList
+                            List<String> idJobList = getIdJobList(appliedJobsList);
+
+                            DatabaseReference jobsRef = FirebaseDatabase.getInstance().getReference("Job");
+
+                            jobsRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Job job = snapshot.getValue(Job.class);
+                                        if (job != null && idJobList.contains(String.valueOf(job.getIdJob()))) {
+                                            job.setKey(snapshot.getKey());
+                                            jobList.add(job);
+                                        }
+                                    }
+
+                                    historyAdapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Handle error
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Handle error
+                        }
+                    });
+                }
                 Toast.makeText(HistoryUserActivity.this, "Rejected clicked", Toast.LENGTH_SHORT).show();
             }
         });

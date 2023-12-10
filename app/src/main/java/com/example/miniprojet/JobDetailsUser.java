@@ -112,6 +112,8 @@ public class JobDetailsUser extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if (maxid != null) {
+                                System.out.println(idJob);
+                                System.out.println(key);
                                 DatabaseReference userPostsRef = FirebaseDatabase.getInstance().getReference("Post");
                                 Query query = userPostsRef.orderByChild("idUser").equalTo(user.getIdUser());
 

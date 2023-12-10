@@ -38,6 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     private List<Job> jobList;
 
     private FirebaseAuth authProfile;
+    public static Long idJobfromMyAdapter;
 
     public MyAdapter(Context context, List<Job> jobList) {
         this.context = context;
@@ -55,6 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+        idJobfromMyAdapter = jobList.get(position).getIdJob();
         Long idJob = jobList.get(position).getIdJob();
         holder.tvJobTitle.setText(jobList.get(position).getJobTitle());
         holder.tvJobDate.setText(jobList.get(position).getJobDate());
@@ -118,8 +120,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
                            /**/
                         }else {
+
                                                 Intent intent = new Intent(context, JobDetailsUser.class);
                                                 Long idJob = jobList.get(holder.getAdapterPosition()).getIdJob();
+                                                System.out.println(idJob);
                                                 intent.putExtra("jobTitle", jobList.get(holder.getAdapterPosition()).getJobTitle());
                                                 intent.putExtra("jobDate", jobList.get(holder.getAdapterPosition()).getJobDate());
                                                 intent.putExtra("jobDescription", jobList.get(holder.getAdapterPosition()).getJobDescription());

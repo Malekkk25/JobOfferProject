@@ -19,6 +19,7 @@ import com.example.miniprojet.adapter.MyAdapter;
 import com.example.miniprojet.entites.Job;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,6 +83,11 @@ public class listJobs_compagny extends AppCompatActivity {
                     startActivity(i);
 
                 } else if (item.getItemId() == R.id.nav_logout) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i = new Intent(listJobs_compagny.this, login_user.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    finish();
 
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
