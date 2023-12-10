@@ -1,5 +1,6 @@
 package com.example.miniprojet;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -64,9 +65,10 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 country = addresses.get(0).getCountryName();
 
                 Toast.makeText(this, "Address: " + address, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MapsActivity2.this, InsertJobPostActivity.class);
-                intent.putExtra("address", address);
-                startActivity(intent);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("address", address);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
                 // Use other address components as needed
             } else {
                 Toast.makeText(this, "Address not found", Toast.LENGTH_SHORT).show();
