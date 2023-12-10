@@ -168,5 +168,13 @@ public class JobDetailsUser extends AppCompatActivity {
                 // Handle onCancelled event
             }
         });
+        tvJobLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(JobDetailsUser.this, GetMapsActivity.class);
+                intent.putExtra("jobLocation", tvJobLocation.getText().toString());
+                startActivity(intent);
+            }
+        });
     }
 }

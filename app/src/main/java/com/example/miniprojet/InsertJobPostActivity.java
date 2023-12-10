@@ -199,7 +199,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(InsertJobPostActivity.this, MapsActivity.class);
+                Intent intent = new Intent(InsertJobPostActivity.this, MapsActivity2.class);
                 startActivity(intent);
                 onPause();
                 System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
