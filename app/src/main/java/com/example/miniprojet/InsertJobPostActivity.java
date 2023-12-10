@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -49,6 +50,8 @@ public class InsertJobPostActivity extends AppCompatActivity {
     Long maxid;
     DatabaseReference database;
     DatePickerDialog.OnDateSetListener setListener;
+
+    private  final int MAPS_ACTIVITY_REQUEST_CODE = 1;
 
     private FirebaseAuth authProfile;
 
@@ -191,11 +194,8 @@ public class InsertJobPostActivity extends AppCompatActivity {
         etJobLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(InsertJobPostActivity.this, MapsActivity2.class);
-                startActivity(intent);
-                onPause();
-                System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                startActivityForResult(intent, MAPS_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -245,7 +245,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
 
     }
 
-    @Override
+   /* @Override
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
@@ -254,7 +254,16 @@ public class InsertJobPostActivity extends AppCompatActivity {
             etJobLocation.setText(address);
         }
     }
+*/
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
 
+       if (requestCode == MAPS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+           String address = data.getStringExtra("address");
+           etJobLocation.setText(address);
+       }
+   }
     public void  saveData(String id){
         AlertDialog.Builder builder = new AlertDialog.Builder(InsertJobPostActivity.this);
         builder.setCancelable(false);

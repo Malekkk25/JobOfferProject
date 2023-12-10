@@ -1,22 +1,27 @@
 package com.example.miniprojet;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.EditText;
+
 import com.example.miniprojet.adapter.CandidateAdapter;
+import com.example.miniprojet.adapter.MyAdapter;
+import com.example.miniprojet.entites.Job;
 import com.example.miniprojet.entites.Post;
 import com.example.miniprojet.entites.User;
 import com.google.android.material.navigation.NavigationView;
+import com.google.api.Usage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,7 +82,11 @@ public class listCandidatesActivity extends AppCompatActivity {
                     Intent i = new Intent(listCandidatesActivity.this, listJobs_compagny.class);
                     startActivity(i);
                 }  else if (item.getItemId() == R.id.nav_logout) {
-
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i=new Intent(listCandidatesActivity.this,login_user.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    finish();
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;

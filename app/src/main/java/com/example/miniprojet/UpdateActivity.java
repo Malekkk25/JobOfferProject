@@ -1,5 +1,6 @@
 package com.example.miniprojet;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class UpdateActivity extends AppCompatActivity {
     String idComp="";
     DatabaseReference databaseReference;
     StorageReference storageReference;
+    private  final int MAPS_ACTIVITY_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +91,25 @@ public class UpdateActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        utvJobLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UpdateActivity.this, MapsActivity2.class);
+                startActivityForResult(intent, MAPS_ACTIVITY_REQUEST_CODE);
+            }
+        });
 
 
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == MAPS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            String address = data.getStringExtra("address");
+            utvJobLocation.setText(address);
+        }
     }
 
     public void saveData() {
